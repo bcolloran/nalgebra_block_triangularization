@@ -1,8 +1,8 @@
-mod adjacency;
-mod matching;
-mod ordering;
-mod permutation;
-mod scc;
+pub mod adjacency;
+pub mod matching;
+pub mod ordering;
+pub mod permutation;
+pub mod scc;
 
 use nalgebra::{Dyn, Matrix, PermutationSequence, Scalar, Storage};
 
