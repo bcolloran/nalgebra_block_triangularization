@@ -121,3 +121,23 @@ where
         matching_size: matching.size,
     }
 }
+
+impl UpperBtfStructure {
+    /// Returns the `row_order` and `col_order` partitioned into blocks according to `block_sizes`;
+    /// that is, returns a vector of `(row_indices, col_indices)` for each block.
+    pub fn block_indices(&self) -> Vec<(Vec<usize>, Vec<usize>)> {
+        let mut blocks = Vec::new();
+        let mut row_start = 0;
+        let mut col_start = 0;
+
+        for &size in &self.block_sizes {
+            let row_block: Vec<usize> = self.row_order[row_start..row_start + size].to_vec();
+            let col_block: Vec<usize> = self.col_order[col_start..col_start + size].to_vec();
+            blocks.push((row_block, col_block));
+            row_start += size;
+            col_start += size;
+        }
+
+        blocks
+    }
+}
