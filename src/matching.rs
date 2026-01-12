@@ -38,10 +38,10 @@ pub fn hopcroft_karp(adj: &[Vec<usize>], n_right: usize) -> Matching {
     let mut matching_size = 0;
     while bfs(n_left, adj, &row_to_col, &col_to_row, &mut dist, inf) {
         for u in 0..n_left {
-            if row_to_col[u].is_none() {
-                if dfs(u, adj, &mut row_to_col, &mut col_to_row, &mut dist, inf) {
-                    matching_size += 1;
-                }
+            if row_to_col[u].is_none()
+                && dfs(u, adj, &mut row_to_col, &mut col_to_row, &mut dist, inf)
+            {
+                matching_size += 1;
             }
         }
     }

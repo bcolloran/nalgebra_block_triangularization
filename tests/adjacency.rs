@@ -68,8 +68,8 @@ fn adjacency_identity_matrix() {
     let m: DMatrix<f64> = DMatrix::identity(5, 5);
     let adj = build_row_adjacency(&m);
     assert_eq!(adj.len(), 5);
-    for i in 0..5 {
-        assert_eq!(adj[i], vec![i]);
+    for (i, row) in adj.iter().enumerate().take(5) {
+        assert_eq!(*row, vec![i]);
     }
 }
 

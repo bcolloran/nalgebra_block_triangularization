@@ -1,6 +1,11 @@
 # nalgebra_block_triangularization
 
+
+[![CI](https://github.com/bcolloran/nalgebra_block_triangularization/workflows/CI/badge.svg)](https://github.com/bcolloran/nalgebra_block_triangularization/actions)
+[![codecov](https://codecov.io/gh/bcolloran/nalgebra_block_triangularization/branch/main/graph/badge.svg)](https://codecov.io/gh/bcolloran/nalgebra_block_triangularization)
+
 Structural decomposition of sparse matrices into block triangular form using graph algorithms.
+
 
 ## Overview
 

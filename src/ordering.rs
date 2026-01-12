@@ -16,8 +16,8 @@ use std::{cmp::Reverse, collections::BinaryHeap};
 pub fn topo_sort_with_tiebreak(dag: &[Vec<usize>], key: &[usize]) -> Vec<usize> {
     let n = dag.len();
     let mut indeg = vec![0usize; n];
-    for u in 0..n {
-        for &v in &dag[u] {
+    for neighbors in dag.iter().take(n) {
+        for &v in neighbors {
             indeg[v] += 1;
         }
     }
@@ -72,16 +72,16 @@ pub fn col_order_from_row_order(
     let mut col_order = Vec::with_capacity(ncols);
 
     for &r in row_order {
-        if let Some(c) = row_to_col.get(r).copied().flatten() {
-            if c < ncols && !used[c] {
-                used[c] = true;
-                col_order.push(c);
-            }
+        if let Some(c) = row_to_col.get(r).copied().flatten()
+            && c < ncols && !used[c]
+        {
+            used[c] = true;
+            col_order.push(c);
         }
     }
 
-    for c in 0..ncols {
-        if !used[c] {
+    for (c, &is_used) in used.iter().enumerate().take(ncols) {
+        if !is_used {
             col_order.push(c);
         }
     }
