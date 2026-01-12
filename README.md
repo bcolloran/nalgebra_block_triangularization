@@ -122,15 +122,6 @@ The output provides:
 - **matching_size**: Number of matched pairs (equations-variables)
 - **row_order** / **col_order**: Permutation mappings (new position → original index)
 
-### For Equation Systems
-
-If your matrix represents equation-variable incidence (row *i* = equation *i*, column *j* = variable *j*, nonzero means variable appears in equation):
-
-- **Small blocks**: Simple sub-problems that can be solved independently
-- **Unmatched columns**: Free variables (degrees of freedom)
-- **Unmatched rows**: Over-determined constraints
-- **Block ordering**: Safe computation sequence (solve earlier blocks first)
-
 ## Implementation Details
 
 The library is organized into focused modules:
@@ -142,16 +133,6 @@ The library is organized into focused modules:
 - `permutation`: Conversion to nalgebra permutation sequences
 
 All algorithms operate purely on the structural sparsity pattern (nonzero vs. zero), not on numerical values.
-
-## Related Concepts
-
-This implementation is closely related to several well-established techniques:
-
-- **Dulmage-Mendelsohn (DM) decomposition**: The standard bipartite graph decomposition for structural analysis
-- **Block Triangular Form (BTF)**: Matrix reordering to block structure
-- **Tearing**: Breaking algebraic loops by selecting tear variables
-- **Causalization**: Determining solve order in DAE systems (used in Modelica, etc.)
-- **Sequential Modular Method**: Process flowsheet simulation approach
 
 ## References
 
@@ -165,12 +146,3 @@ This implementation is closely related to several well-established techniques:
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## Contributing
-
-Contributions are welcome! Areas for future development:
-
-- Property-based testing with larger random matrices
-- Bordered block triangular form (BBTF) for tear variable identification
-- Support for rectangular and structurally singular matrices
-- Integration with sparse matrix formats
-- Performance benchmarks and optimizations
