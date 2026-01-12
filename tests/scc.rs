@@ -85,16 +85,8 @@ fn scc_complex_graph() {
     assert_eq!(sccs.len(), 2);
 
     // Find which SCC contains 0 and which contains 2
-    let scc_with_0: Vec<_> = sccs
-        .iter()
-        .find(|scc| scc.contains(&0))
-        .unwrap()
-        .to_vec();
-    let scc_with_2: Vec<_> = sccs
-        .iter()
-        .find(|scc| scc.contains(&2))
-        .unwrap()
-        .to_vec();
+    let scc_with_0: Vec<_> = sccs.iter().find(|scc| scc.contains(&0)).unwrap().to_vec();
+    let scc_with_2: Vec<_> = sccs.iter().find(|scc| scc.contains(&2)).unwrap().to_vec();
 
     let mut sorted_0 = scc_with_0.clone();
     sorted_0.sort();

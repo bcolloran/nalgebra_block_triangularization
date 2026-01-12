@@ -73,7 +73,8 @@ pub fn col_order_from_row_order(
 
     for &r in row_order {
         if let Some(c) = row_to_col.get(r).copied().flatten()
-            && c < ncols && !used[c]
+            && c < ncols
+            && !used[c]
         {
             used[c] = true;
             col_order.push(c);
