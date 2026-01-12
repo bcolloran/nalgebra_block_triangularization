@@ -25,21 +25,6 @@ or
 
 where each diagonal block corresponds to a strongly connected component (SCC) in the dependency graph induced by a maximum matching.
 
-## Why Block Triangularization?
-
-When solving large systems of nonlinear equations where each equation involves only a subset of unknowns, decomposing the system into smaller sub-problems can dramatically improve:
-
-- **Solvability**: Large coupled systems may fail where sequential smaller systems succeed
-- **Robustness**: Reduces dimensionality and improves conditioning
-- **Diagnostics**: Reveals structural properties (over/under-determined subsystems, algebraic loops)
-- **Efficiency**: Solves independent blocks separately, converts hard problems into sequences of easier ones
-
-This is particularly valuable for:
-- Parameter estimation from experimental measurements
-- Physical system modeling (DAE solvers, process simulation)
-- Constraint satisfaction problems
-- Sparse nonlinear optimization
-
 ## Algorithm
 
 The implementation uses a well-established graph-theoretic approach:
