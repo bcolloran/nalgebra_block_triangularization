@@ -1,4 +1,15 @@
-/// Tarjan SCC on a directed graph adjacency list.
+/// Compute strongly connected components using Tarjan's algorithm.
+///
+/// Returns a list of SCCs, where each SCC is a vector of vertex indices.
+/// The SCCs are returned in reverse topological order of the condensation DAG.
+///
+/// # Arguments
+///
+/// * `graph` - Adjacency list representation of a directed graph
+///
+/// # Returns
+///
+/// Vector of SCCs, where each SCC is a vector of vertex indices.
 pub fn tarjan_scc(graph: &[Vec<usize>]) -> Vec<Vec<usize>> {
     let n = graph.len();
     let mut state = TarjanState {
@@ -60,6 +71,16 @@ fn strongconnect(v: usize, graph: &[Vec<usize>], state: &mut TarjanState) {
     }
 }
 
+/// Build a mapping from vertex to SCC identifier.
+///
+/// # Arguments
+///
+/// * `sccs` - List of SCCs from `tarjan_scc`
+/// * `n` - Total number of vertices
+///
+/// # Returns
+///
+/// Vector where `result[v]` is the SCC id containing vertex `v`.
 pub fn scc_id_map(sccs: &[Vec<usize>], n: usize) -> Vec<usize> {
     let mut comp_of = vec![usize::MAX; n];
     for (cid, comp) in sccs.iter().enumerate() {
@@ -71,6 +92,20 @@ pub fn scc_id_map(sccs: &[Vec<usize>], n: usize) -> Vec<usize> {
     comp_of
 }
 
+/// Build the condensation DAG from SCCs.
+///
+/// Creates a directed acyclic graph where each node represents an SCC,
+/// and edges represent dependencies between SCCs.
+///
+/// # Arguments
+///
+/// * `graph` - Original graph adjacency list
+/// * `comp_of` - Mapping from vertex to SCC id (from `scc_id_map`)
+/// * `ncomp` - Number of SCCs
+///
+/// # Returns
+///
+/// Adjacency list for the condensation DAG.
 pub fn condensation_dag(graph: &[Vec<usize>], comp_of: &[usize], ncomp: usize) -> Vec<Vec<usize>> {
     let mut dag = vec![Vec::new(); ncomp];
     for u in 0..graph.len() {

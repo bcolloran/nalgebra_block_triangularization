@@ -1,7 +1,31 @@
+//! Block triangularization of sparse matrices using graph algorithms.
+//!
+//! This library computes row and column permutations that reveal the block triangular
+//! structure of a sparse matrix, supporting both upper and lower block triangular forms.
+//!
+//! # Examples
+//!
+//! ```
+//! use nalgebra::DMatrix;
+//! use nalgebra_block_triangularization::upper_triangular_permutations;
+//!
+//! let m = DMatrix::from_row_slice(3, 3, &[1, 1, 0, 0, 1, 1, 0, 0, 1]);
+//! let (pr, pc) = upper_triangular_permutations(&m);
+//!
+//! let mut u = m.clone();
+//! pr.permute_rows(&mut u);
+//! pc.permute_columns(&mut u);
+//! ```
+
+/// Graph construction from matrix sparsity patterns.
 pub mod adjacency;
+/// Maximum bipartite matching algorithms.
 pub mod matching;
+/// Topological sorting and column ordering.
 pub mod ordering;
+/// Conversion to nalgebra permutation sequences.
 pub mod permutation;
+/// Strongly connected components algorithms.
 pub mod scc;
 
 use nalgebra::{Dyn, Matrix, PermutationSequence, Scalar, Storage};
@@ -45,20 +69,38 @@ where
     (prow, pcol)
 }
 
-/// Extra structure you can print for diagnostics.
+/// Structural information from upper block triangular decomposition.
+///
+/// Contains the permutation orderings, block sizes, and matching information
+/// needed to understand and manipulate the block structure of a matrix.
 #[derive(Debug, Clone)]
 pub struct UpperBtfStructure {
-    /// New position -> old row index
+    /// Permutation mapping: new position → old row index.
     pub row_order: Vec<usize>,
-    /// New position -> old col index
+    /// Permutation mapping: new position → old column index.
     pub col_order: Vec<usize>,
-    /// Sizes of diagonal SCC blocks, in order.
+    /// Sizes of diagonal SCC blocks, in order from first to last.
     pub block_sizes: Vec<usize>,
-    /// Size of maximum matching.
+    /// Number of matched row-column pairs found by maximum matching.
     pub matching_size: usize,
 }
 
-/// Compute the ordering + block sizes (useful for printing block separators).
+/// Compute the upper block triangular structure of a matrix.
+///
+/// Returns detailed structural information including row/column orderings,
+/// block sizes, and matching size. This is useful for diagnostics and for
+/// accessing individual blocks.
+///
+/// # Examples
+///
+/// ```
+/// use nalgebra::DMatrix;
+/// use nalgebra_block_triangularization::upper_block_triangular_structure;
+///
+/// let m = DMatrix::from_row_slice(3, 3, &[1, 1, 0, 0, 1, 1, 0, 0, 1]);
+/// let structure = upper_block_triangular_structure(&m);
+/// println!("Block sizes: {:?}", structure.block_sizes);
+/// ```
 pub fn upper_block_triangular_structure<T, R, C, S>(mat: &Matrix<T, R, C, S>) -> UpperBtfStructure
 where
     T: Scalar + PartialEq + Default,
@@ -175,20 +217,38 @@ where
     (prow, pcol)
 }
 
-/// Extra structure you can print for diagnostics.
+/// Structural information from lower block triangular decomposition.
+///
+/// Contains the permutation orderings, block sizes, and matching information
+/// needed to understand and manipulate the block structure of a matrix.
 #[derive(Debug, Clone)]
 pub struct LowerBtfStructure {
-    /// New position -> old row index
+    /// Permutation mapping: new position → old row index.
     pub row_order: Vec<usize>,
-    /// New position -> old col index
+    /// Permutation mapping: new position → old column index.
     pub col_order: Vec<usize>,
-    /// Sizes of diagonal SCC blocks, in order.
+    /// Sizes of diagonal SCC blocks, in order from first to last.
     pub block_sizes: Vec<usize>,
-    /// Size of maximum matching.
+    /// Number of matched row-column pairs found by maximum matching.
     pub matching_size: usize,
 }
 
-/// Compute the ordering + block sizes (useful for printing block separators).
+/// Compute the lower block triangular structure of a matrix.
+///
+/// Returns detailed structural information including row/column orderings,
+/// block sizes, and matching size. This is useful for diagnostics and for
+/// accessing individual blocks.
+///
+/// # Examples
+///
+/// ```
+/// use nalgebra::DMatrix;
+/// use nalgebra_block_triangularization::lower_block_triangular_structure;
+///
+/// let m = DMatrix::from_row_slice(3, 3, &[1, 0, 0, 1, 1, 0, 1, 1, 1]);
+/// let structure = lower_block_triangular_structure(&m);
+/// println!("Block sizes: {:?}", structure.block_sizes);
+/// ```
 pub fn lower_block_triangular_structure<T, R, C, S>(mat: &Matrix<T, R, C, S>) -> LowerBtfStructure
 where
     T: Scalar + PartialEq + Default,

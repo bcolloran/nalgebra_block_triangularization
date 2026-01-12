@@ -1,15 +1,32 @@
 use std::collections::VecDeque;
 
+/// Result of maximum bipartite matching.
+///
+/// Contains the matching mappings from rows to columns and vice versa,
+/// along with the total size of the matching.
 #[derive(Debug, Clone)]
 pub struct Matching {
+    /// Mapping from row index to matched column index (if any).
     pub row_to_col: Vec<Option<usize>>,
+    /// Mapping from column index to matched row index (if any).
     pub col_to_row: Vec<Option<usize>>,
+    /// Total number of matched pairs.
     pub size: usize,
 }
 
-/// Hopcroft–Karp maximum bipartite matching.
-/// Left side: rows (0..adj.len()).
-/// Right side: columns (0..n_right).
+/// Compute maximum bipartite matching using the Hopcroft-Karp algorithm.
+///
+/// Treats the graph as bipartite with left vertices (rows) and right vertices (columns).
+/// The adjacency list `adj[i]` contains the columns that row `i` connects to.
+///
+/// # Arguments
+///
+/// * `adj` - Adjacency list for left side (rows), where `adj[i]` lists connected right vertices
+/// * `n_right` - Number of right vertices (columns)
+///
+/// # Returns
+///
+/// A `Matching` containing the maximum matching and size information.
 pub fn hopcroft_karp(adj: &[Vec<usize>], n_right: usize) -> Matching {
     let n_left = adj.len();
     let mut row_to_col = vec![None; n_left];
