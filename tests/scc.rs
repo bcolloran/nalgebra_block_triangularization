@@ -89,16 +89,12 @@ fn scc_complex_graph() {
         .iter()
         .find(|scc| scc.contains(&0))
         .unwrap()
-        .iter()
-        .copied()
-        .collect();
+        .to_vec();
     let scc_with_2: Vec<_> = sccs
         .iter()
         .find(|scc| scc.contains(&2))
         .unwrap()
-        .iter()
-        .copied()
-        .collect();
+        .to_vec();
 
     let mut sorted_0 = scc_with_0.clone();
     sorted_0.sort();

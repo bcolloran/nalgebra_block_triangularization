@@ -35,10 +35,10 @@ pub fn build_row_dependency_graph(
 
     for (i, cols) in row_adj.iter().enumerate() {
         for &j in cols {
-            if let Some(k) = col_to_row.get(j).copied().flatten() {
-                if k != i {
-                    g[i].push(k);
-                }
+            if let Some(k) = col_to_row.get(j).copied().flatten()
+                && k != i
+            {
+                g[i].push(k);
             }
         }
         g[i].sort_unstable();

@@ -88,8 +88,8 @@ proptest! {
 
         // Build in-degree tracking to verify tie-breaking
         let mut indeg = vec![0; n];
-        for u in 0..n {
-            for &v in &dag[u] {
+        for neighbors in dag.iter().take(n) {
+            for &v in neighbors {
                 indeg[v] += 1;
             }
         }
@@ -116,8 +116,7 @@ proptest! {
         let row_to_col: Vec<Option<usize>> = matching_data
             .iter()
             .take(n)
-            .enumerate()
-            .map(|(_i, &val)| {
+            .map(|&val| {
                 if val % 3 == 0 {
                     None // Some rows unmatched
                 } else {
@@ -165,10 +164,9 @@ proptest! {
         let num_matched = row_to_col.iter().filter(|x| x.is_some()).count();
 
         // First num_matched columns in col_order should be matched columns
-        for i in 0..num_matched.min(col_order.len()) {
-            let col = col_order[i];
+        for (i, &col) in col_order.iter().enumerate().take(num_matched.min(col_order.len())) {
             // Check if this column is matched to some row
-            let is_matched = row_to_col.iter().any(|&mc| mc == Some(col));
+            let is_matched = row_to_col.contains(&Some(col));
             prop_assert!(
                 is_matched,
                 "Column {} at position {} is unmatched but appears before matched columns",
