@@ -6,6 +6,12 @@
 
 Structural decomposition of sparse matrices into block triangular form using graph algorithms.
 
+## LLM Notice
+This was written to my spec entirely by LLM. It could contain errors, but my spec included a mandate for quite a lot of property-based testing. I've only looked through this quickly, but the proptests look good and cover a huge variety of cases, way more than I would have ever had the patience to write myself.
+
+This is good enough for me, perhaps for you too :-)
+
+But if you find any mistakes, please open an issue or PR!
 
 ## Overview
 
