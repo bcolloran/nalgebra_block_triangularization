@@ -1,9 +1,21 @@
 use nalgebra::{Dyn, PermutationSequence};
 
-/// Convert an explicit order (new_pos -> old_index) into a nalgebra PermutationSequence<Dyn>
-/// via a minimal-ish sequence of swaps.
+/// Convert an ordering to a nalgebra permutation sequence.
 ///
-/// This generates swaps that transform [0,1,2,..] into `order`.
+/// Takes an explicit ordering (new position → old index) and converts it
+/// to a `PermutationSequence` via a sequence of transpositions.
+///
+/// # Arguments
+///
+/// * `order` - Permutation mapping where `order[i]` is the original index for position `i`
+///
+/// # Returns
+///
+/// A `PermutationSequence` that transforms the identity ordering into `order`.
+///
+/// # Panics
+///
+/// Panics in debug mode if `order` is not a valid permutation.
 pub fn permutation_sequence_from_order(order: &[usize]) -> PermutationSequence<Dyn> {
     let n = order.len();
     let mut p = PermutationSequence::<Dyn>::identity(n);

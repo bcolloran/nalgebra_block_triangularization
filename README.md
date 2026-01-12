@@ -1,14 +1,18 @@
 # nalgebra_block_triangularization
 
-Structural decomposition of sparse matrices into block upper-triangular form using graph algorithms.
+Structural decomposition of sparse matrices into block triangular form using graph algorithms.
 
 ## Overview
 
 This library computes row and column permutations that reveal the block triangular structure of a sparse matrix. Given a matrix **M**, it finds permutation matrices **P** and **Q** such that:
 
-**U = P M Q**
+**U = P M Q** (upper block triangular)
 
-is block upper-triangular, where each diagonal block corresponds to a strongly connected component (SCC) in the dependency graph induced by a maximum matching.
+or
+
+**L = P M Q** (lower block triangular)
+
+where each diagonal block corresponds to a strongly connected component (SCC) in the dependency graph induced by a maximum matching.
 
 ## Why Block Triangularization?
 
@@ -32,7 +36,9 @@ The implementation uses a well-established graph-theoretic approach:
 1. **Maximum Bipartite Matching** (Hopcroft-Karp): Treat the matrix as a bipartite graph (rows ↔ columns) and find a maximum matching
 2. **Row Dependency Graph**: Build a directed graph where row *i* → row *k* if row *i* has a nonzero in a column matched to row *k*
 3. **Strongly Connected Components** (Tarjan): Compute SCCs of the dependency graph—each SCC is one diagonal block
-4. **Topological Ordering**: Order the SCCs topologically to achieve upper-triangular block structure
+4. **Topological Ordering**: Order the SCCs topologically to achieve block triangular structure
+   - For **upper** triangular form: edges go "forward" (later blocks depend on earlier blocks)
+   - For **lower** triangular form: edges go "backward" (earlier blocks depend on later blocks)
 5. **Permutation Sequences**: Convert the resulting row and column orders into `nalgebra::PermutationSequence` objects
 
 ## Usage
@@ -88,6 +94,28 @@ println!("Number of blocks: {}", structure.block_sizes.len());
 println!("Block sizes: {:?}", structure.block_sizes);
 println!("Row ordering: {:?}", structure.row_order);
 println!("Column ordering: {:?}", structure.col_order);
+
+// Access individual blocks
+let blocks = structure.block_indices();
+for (i, (row_indices, col_indices)) in blocks.iter().enumerate() {
+    println!("Block {}: rows {:?}, cols {:?}", i, row_indices, col_indices);
+}
+```
+
+### Lower Block Triangular Form
+
+The library also supports lower block triangular form:
+
+```rust
+use nalgebra_block_triangularization::{lower_triangular_permutations, lower_block_triangular_structure};
+
+let (pr, pc) = lower_triangular_permutations(&m);
+let mut l = m.clone();
+pr.permute_rows(&mut l);
+pc.permute_columns(&mut l);
+
+let structure = lower_block_triangular_structure(&m);
+println!("Lower BTF structure: {:?}", structure);
 ```
 
 ## Interpretation
