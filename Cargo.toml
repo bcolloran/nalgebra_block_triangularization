@@ -2,6 +2,20 @@
 name = "nalgebra_block_triangularization"
 version = "0.1.0"
 edition = "2024"
+authors = ["brendan c"]
+description = "Structural decomposition of sparse matrices into block triangular form using graph algorithms"
+license = "MIT"
+repository = "https://github.com/bcolloran/nalgebra_block_triangularization"
+documentation = "https://docs.rs/nalgebra_block_triangularization"
+keywords = [
+  "linear-algebra",
+  "sparse-matrix",
+  "graph-algorithms",
+  "bipartite-matching",
+  "block-triangular",
+]
+categories = ["algorithms", "mathematics", "science"]
+readme = "README.md"
 
 
 [lib]
